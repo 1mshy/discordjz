@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
 const client = new Client({
@@ -15,6 +14,7 @@ client.commands = new Collection();
 const config = require("./config.json");
 client.config = config;
 client.commands = new Collection();
+client.errors = new Collection();
 
 // IMPORTANT readdir is different than require and "src" is needed before
 const events = fs.readdirSync("./src//events").filter(file => file.endsWith(".js"));
@@ -27,6 +27,7 @@ for (const file of events)
     client.on(eventName, event.bind(null, client));
 }
 
+// COMMANDS
 const commands = fs.readdirSync("./src//commands").filter(file => file.endsWith(".js"));
 for (const file of commands) {
   const commandName = file.split(".")[0];
@@ -35,7 +36,15 @@ for (const file of commands) {
   console.log(`Attempting to load command ${commandName}`);
   client.commands.set(commandName, command);
 }
+// ERRORS
+const errors = fs.readdirSync("./src//errors").filter(file => file.endsWith(".js"));
+for (const file of errors) {
+  const errorName = file.split(".")[0];
+  const error = require(`./errors/${file}`);
 
+  console.log(`Attempting to load error ${errorName}`);
+  client.errors.set(errorName, error);
+}
 
 
 client.login(client.config.token);
