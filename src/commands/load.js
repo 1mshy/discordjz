@@ -11,3 +11,4 @@ exports.run = (client, message, args) => {
   };
   
   exports.name = "load";
+  exports.description = ".load {command}";

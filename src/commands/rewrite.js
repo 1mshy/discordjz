@@ -24,3 +24,4 @@ exports.run = async (client, message, ...prompt) => {
 }
 
 exports.name = "ai";
+exports.description = ".rewrite {phrase}";

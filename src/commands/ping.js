@@ -3,3 +3,4 @@ exports.run = async (client, message, args) => {
 }
 
 exports.name = "ping";
+exports.description = "try me";

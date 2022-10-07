@@ -3,3 +3,4 @@ exports.run = async (client, message, args) => {
 }
 
 exports.name = "commandNotFound";
+exports.description = "Default description";
