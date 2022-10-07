@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
 	.setURL('https://www.youtube.com/watch?v=CrDgWkmBDmw');
 
     const command = client.commands.get(args[0]);
-    if (typeof command !== undefined) {
+    if (command !== undefined) {
         embed.addFields(
             {
                 name: command.name, value: command.description
