@@ -23,5 +23,5 @@ exports.run = async (client, message, ...prompt) => {
     await message.channel.send(natural).catch(console.error);
 }
 
-exports.name = "ai";
+exports.name = "rewrite";
 exports.description = ".rewrite {phrase}";

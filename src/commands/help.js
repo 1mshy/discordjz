@@ -1,4 +1,4 @@
-exports.run = async (client, message, _) => {
+exports.run = async (client, message, args) => {
     const { EmbedBuilder } = require('discord.js');
 
     const embed = new EmbedBuilder()
@@ -7,19 +7,25 @@ exports.run = async (client, message, _) => {
     // andrew tate
 	.setURL('https://www.youtube.com/watch?v=CrDgWkmBDmw');
 
-    for (const [commandName, cmd] of client.commands)
-    {
-        console.log(commandName);
+    const command = client.commands.get(args[0]);
+    if (typeof command !== undefined) {
         embed.addFields(
             {
-                name: cmd.name, value: cmd.description
+                name: command.name, value: command.description
             }
         );
+    } else {
+        for (const [commandName, cmd] of client.commands)
+        {
+            embed.addFields(
+                {
+                    name: commandName, value: cmd.description
+                }
+            );
+        }
     }
-
     await message.channel.send( {embeds: [embed]});
-    
 }
 
-exports.name = "ai";
-exports.description = "Send the help message";
+exports.name = "help";
+exports.description = "Sends the help message";
