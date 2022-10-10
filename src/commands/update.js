@@ -6,8 +6,8 @@ exports.run = async (client, message, args) => {
     const status = execSync('git status -uno', { encoding: 'utf-8' });
     let stats = status.split("\n")[1].split(" ")[3];
     // up: up to date
-    if(stats=='up') return;
     // behind: needs to update
+    if(stats!=="behind") return;
     const merge = execSync('git pull origin master', { encoding: 'utf-8' });
     // getting the files that were updated
     let arr = merge.split("\n");
