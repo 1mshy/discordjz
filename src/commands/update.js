@@ -2,26 +2,44 @@ exports.run = async (client, message, args) => {
     const execSync = require('child_process').execSync;
     // import { execSync } from 'child_process';  // replace ^ if using ES modules
     
-    const updateInfo = execSync('git remote update', { encoding: 'utf-8' });  // the default is 'buffer'
-    const status = execSync('git status -uno', { encoding: 'utf-8' });
-    let stats = status.split("\n")[1].split(" ")[3];
-    // up: up to date
-    // behind: needs to update
-    console.log(stats)
-    if(stats!=="behind") return;
-    const merge = execSync('git pull origin master', { encoding: 'utf-8' });
-    // getting the files that were updated
-    let arr = merge.split("\n");
-    let index = arr.indexOf("Fast-forward") + 1
+    // const updateInfo = execSync('git remote update', { encoding: 'utf-8' });  // the default is 'buffer'
+    // const status = execSync('git status -uno', { encoding: 'utf-8' });
+    // let stats = status.split("\n")[1].split(" ")[3];
+    // // up: up to date
+    // // behind: needs to update
+    // console.log(stats)
+    // if(stats!=="behind") return;
+    // const merge = execSync('git pull origin master', { encoding: 'utf-8' });
+    // // getting the files that were updated
+    // let arr = merge.split("\n");
+    
+
+    let dummyData = `
+    From github.com:1mshy/discordjz\n
+    * branch            master     -> FETCH_HEAD
+   Updating a16b2e4..57b7909
+   Fast-forward
+    src/commands/unload.js | 1 +
+    src/commands/update.js | 2 ++
+    2 files changed, 3 insertions(+)`.trim();
+    let arr = dummyData.split("\n").map(function(element){
+        return element.trim();
+    });
+
+
+    let index = arr.indexOf("Fast-forward") + 1;
     let isCommand = true;
-    let reload = require("../commands/reload.js")
+    let reload = require("../commands/reload.js");
     while(isCommand)
     {
         // gets the name of the command
         //Ex. src/commands/update.js | 7++++++ -> update.js
+        console.log(index)
+        console.log(arr);
+
         let commandName = arr[index].split("/")[2].split("|")[0].trim().split(".")[0];
         console.log(commandName);
-        await reload.run(client, message, commandName)
+        await reload.run(client, message, [commandName,]);
 
         index++;
         isCommand = arr[index].split("/")[0]=="src";
