@@ -6,27 +6,31 @@ exports.run = async (client, message, args) => {
     let stats = status.split("\n")[1].split(" ")[3];
     // up: up to date
     // behind: needs to update
-    console.log(stats)
-    if(stats!=="behind") return;
+    if(stats!=="behind") 
+    {
+        await message.reply("Client is up to date")
+        return;
+    }
     const merge = execSync('git pull origin master', { encoding: 'utf-8' });
     // getting the files that were updated
     let arr = merge.split("\n");
 
     let index = arr.indexOf("Fast-forward") + 1;
-    let isCommand = true;
+    let isCommand = arr[index].split("/")[0]=="src";
     let reload = require("../commands/reload.js");
+    let load = require("../commands/load.js");
     while(isCommand)
     {
         // gets the name of the command
         //Ex. src/commands/update.js | 7++++++ -> update.js
-        console.log(index)
-        console.log(arr);
-
         let commandName = arr[index].split("/")[2].split("|")[0].trim().split(".")[0];
-        console.log(commandName);
-        await reload.run(client, message, [commandName,]);
-
+        console.log(`Updating ${commandName}.js`);
+        client.commands.includes(commandName) ? 
+            await reload.run(client, message, [commandName,]) : 
+            await load.run(client, message, [commandName,]);
+        
         index++;
+        // makes sure the next file is in the commands section
         isCommand = arr[index].split("/")[0]=="src";
     }
     await message.reply("Update completed.").catch(console.error);
