@@ -11,20 +11,6 @@ exports.run = async (client, message, args) => {
     const merge = execSync('git pull origin master', { encoding: 'utf-8' });
     // getting the files that were updated
     let arr = merge.split("\n");
-    
-
-//     let dummyData = `
-//     From github.com:1mshy/discordjz\n
-//     * branch            master     -> FETCH_HEAD
-//    Updating a16b2e4..57b7909
-//    Fast-forward
-//     src/commands/unload.js | 1 +
-//     src/commands/update.js | 2 ++
-//     2 files changed, 3 insertions(+)`.trim();
-//     let arr = dummyData.split("\n").map(function(element){
-//         return element.trim();
-//     });
-
 
     let index = arr.indexOf("Fast-forward") + 1;
     let isCommand = true;
